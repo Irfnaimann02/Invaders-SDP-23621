@@ -9,13 +9,15 @@ public class Achievement {
 	private String name;
 	/** Player-facing achievement description. */
 	private String description;
-	/** Player kills required to unlock this achievement. */
+	/** Player kills required to unlock this achievement. 0 if not used. */
 	private int requiredEnemyKills;
+	/** Single-run score required to unlock this achievement. 0 if not used. */
+	private int requiredScore;
 	/** Whether the achievement is unlocked. */
 	private boolean unlocked;
 
 	/**
-	 * Creates an achievement definition.
+	 * Creates a kill-based achievement definition.
 	 *
 	 * @param id Persistent identifier.
 	 * @param name Player-facing name.
@@ -26,10 +28,28 @@ public class Achievement {
 	public Achievement(final String id, final String name,
 			final String description, final int requiredEnemyKills,
 			final boolean unlocked) {
+		this(id, name, description, requiredEnemyKills, 0, unlocked);
+	}
+
+	/**
+	 * Creates an achievement definition with both a kill and a score
+	 * requirement; pass 0 for whichever one does not apply.
+	 *
+	 * @param id Persistent identifier.
+	 * @param name Player-facing name.
+	 * @param description Player-facing description.
+	 * @param requiredEnemyKills Player kills required to unlock, 0 if unused.
+	 * @param requiredScore Single-run score required to unlock, 0 if unused.
+	 * @param unlocked Whether the achievement is unlocked.
+	 */
+	public Achievement(final String id, final String name,
+			final String description, final int requiredEnemyKills,
+			final int requiredScore, final boolean unlocked) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.requiredEnemyKills = requiredEnemyKills;
+		this.requiredScore = requiredScore;
 		this.unlocked = unlocked;
 	}
 
@@ -51,6 +71,11 @@ public class Achievement {
 	/** @return Player kills required to unlock. */
 	public final int getRequiredEnemyKills() {
 		return this.requiredEnemyKills;
+	}
+
+	/** @return Single-run score required to unlock. */
+	public final int getRequiredScore() {
+		return this.requiredScore;
 	}
 
 	/** @return Whether this achievement is unlocked. */
