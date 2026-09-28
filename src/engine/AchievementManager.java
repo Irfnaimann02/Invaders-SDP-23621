@@ -58,6 +58,7 @@ public class AchievementManager {
 
 		for (Achievement achievement : this.achievements)
 			if (!achievement.isUnlocked()
+					&& achievement.getRequiredEnemyKills() > 0
 					&& this.playerProfile.getTotalEnemiesKilled()
 							>= achievement.getRequiredEnemyKills()) {
 				achievement.unlock();
