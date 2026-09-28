@@ -304,6 +304,8 @@ public class GameScreen extends Screen {
 						this.enemyShipFormation.destroy(enemyShip);
 						showUnlockedAchievement(Core.getAchievementManager()
 								.recordEnemyDefeated());
+						showUnlockedAchievement(Core.getAchievementManager()
+								.recordScore(this.score));
 						recyclable.add(bullet);
 					}
 				if (this.enemyShipSpecial != null
@@ -314,6 +316,8 @@ public class GameScreen extends Screen {
 					this.enemyShipSpecial.destroy();
 					showUnlockedAchievement(Core.getAchievementManager()
 							.recordEnemyDefeated());
+					showUnlockedAchievement(Core.getAchievementManager()
+							.recordScore(this.score));
 					this.enemyShipSpecialExplosionCooldown.reset();
 					recyclable.add(bullet);
 				}
