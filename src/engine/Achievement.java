@@ -13,11 +13,13 @@ public class Achievement {
 	private int requiredEnemyKills;
 	/** Single-run score required to unlock this achievement. 0 if not used. */
 	private int requiredScore;
+	/** Difficulty tier, for achievements that have Bronze/Silver/Gold levels. */
+	private AchievementTier tier;
 	/** Whether the achievement is unlocked. */
 	private boolean unlocked;
 
 	/**
-	 * Creates a kill-based achievement definition.
+	 * Creates a kill-based, non-tiered achievement definition.
 	 *
 	 * @param id Persistent identifier.
 	 * @param name Player-facing name.
@@ -28,12 +30,13 @@ public class Achievement {
 	public Achievement(final String id, final String name,
 			final String description, final int requiredEnemyKills,
 			final boolean unlocked) {
-		this(id, name, description, requiredEnemyKills, 0, unlocked);
+		this(id, name, description, requiredEnemyKills, 0,
+				AchievementTier.NONE, unlocked);
 	}
 
 	/**
-	 * Creates an achievement definition with both a kill and a score
-	 * requirement; pass 0 for whichever one does not apply.
+	 * Creates a non-tiered achievement definition with both a kill and a
+	 * score requirement; pass 0 for whichever one does not apply.
 	 *
 	 * @param id Persistent identifier.
 	 * @param name Player-facing name.
@@ -45,11 +48,33 @@ public class Achievement {
 	public Achievement(final String id, final String name,
 			final String description, final int requiredEnemyKills,
 			final int requiredScore, final boolean unlocked) {
+		this(id, name, description, requiredEnemyKills, requiredScore,
+				AchievementTier.NONE, unlocked);
+	}
+
+	/**
+	 * Creates an achievement definition with a kill requirement, a score
+	 * requirement and a difficulty tier; pass 0 for whichever requirement
+	 * does not apply.
+	 *
+	 * @param id Persistent identifier.
+	 * @param name Player-facing name.
+	 * @param description Player-facing description.
+	 * @param requiredEnemyKills Player kills required to unlock, 0 if unused.
+	 * @param requiredScore Single-run score required to unlock, 0 if unused.
+	 * @param tier Difficulty tier, AchievementTier.NONE if not tiered.
+	 * @param unlocked Whether the achievement is unlocked.
+	 */
+	public Achievement(final String id, final String name,
+			final String description, final int requiredEnemyKills,
+			final int requiredScore, final AchievementTier tier,
+			final boolean unlocked) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.requiredEnemyKills = requiredEnemyKills;
 		this.requiredScore = requiredScore;
+		this.tier = tier;
 		this.unlocked = unlocked;
 	}
 
@@ -76,6 +101,11 @@ public class Achievement {
 	/** @return Single-run score required to unlock. */
 	public final int getRequiredScore() {
 		return this.requiredScore;
+	}
+
+	/** @return Difficulty tier, AchievementTier.NONE if not tiered. */
+	public final AchievementTier getTier() {
+		return this.tier;
 	}
 
 	/** @return Whether this achievement is unlocked. */

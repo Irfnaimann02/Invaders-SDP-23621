@@ -12,6 +12,12 @@ public class AchievementManager {
 	private static final int THREE_KILLS_TARGET = 3;
 	/** Single-run score required for High Roller. */
 	private static final int HIGH_SCORE_TARGET = 1000;
+	/** Lifetime kills required for Enemy Hunter - Bronze. */
+	private static final int ENEMY_HUNTER_BRONZE_TARGET = 100;
+	/** Lifetime kills required for Enemy Hunter - Silver. */
+	private static final int ENEMY_HUNTER_SILVER_TARGET = 500;
+	/** Lifetime kills required for Enemy Hunter - Gold. */
+	private static final int ENEMY_HUNTER_GOLD_TARGET = 1000;
 
 	/** Persistent player profile. */
 	private PlayerProfile playerProfile;
@@ -30,6 +36,7 @@ public class AchievementManager {
 		this.achievements = new ArrayList<Achievement>();
 		addFirstKillAchievement();
 		addHighScoreAchievement();
+		addEnemyHunterAchievements();
 	}
 
 	/** Adds the Three Kills achievement. */
@@ -45,6 +52,29 @@ public class AchievementManager {
 				"High Roller", "Reach 1,000 points in a single run.", 0,
 				HIGH_SCORE_TARGET, this.playerProfile
 						.isAchievementUnlocked("high_score_1000")));
+	}
+
+	/**
+	 * Adds the Enemy Hunter tiers: lifetime-kill milestones. Gold is meant to
+	 * award a one-time premium currency reward once the shared currency API
+	 * is available; see the TODO in recordEnemyDefeated().
+	 */
+	private void addEnemyHunterAchievements() {
+		this.achievements.add(new Achievement("enemy_hunter_bronze",
+				"Enemy Hunter - Bronze", "Defeat 100 enemies in total.",
+				ENEMY_HUNTER_BRONZE_TARGET, 0, AchievementTier.BRONZE,
+				this.playerProfile.isAchievementUnlocked(
+						"enemy_hunter_bronze")));
+		this.achievements.add(new Achievement("enemy_hunter_silver",
+				"Enemy Hunter - Silver", "Defeat 500 enemies in total.",
+				ENEMY_HUNTER_SILVER_TARGET, 0, AchievementTier.SILVER,
+				this.playerProfile.isAchievementUnlocked(
+						"enemy_hunter_silver")));
+		this.achievements.add(new Achievement("enemy_hunter_gold",
+				"Enemy Hunter - Gold", "Defeat 1,000 enemies in total.",
+				ENEMY_HUNTER_GOLD_TARGET, 0, AchievementTier.GOLD,
+				this.playerProfile.isAchievementUnlocked(
+						"enemy_hunter_gold")));
 	}
 
 	/**
