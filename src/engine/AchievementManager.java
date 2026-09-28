@@ -10,6 +10,8 @@ public class AchievementManager {
 
 	/** Number of player kills required for Three Kills. */
 	private static final int THREE_KILLS_TARGET = 3;
+	/** Single-run score required for High Roller. */
+	private static final int HIGH_SCORE_TARGET = 1000;
 
 	/** Persistent player profile. */
 	private PlayerProfile playerProfile;
@@ -27,6 +29,7 @@ public class AchievementManager {
 
 		this.achievements = new ArrayList<Achievement>();
 		addFirstKillAchievement();
+		addHighScoreAchievement();
 	}
 
 	/** Adds the Three Kills achievement. */
@@ -34,6 +37,14 @@ public class AchievementManager {
 		this.achievements.add(new Achievement("first_kill", "Three Kills",
 				"Defeat three enemies.", THREE_KILLS_TARGET, this.playerProfile
 						.isAchievementUnlocked("first_kill")));
+	}
+
+	/** Adds the High Roller achievement. */
+	private void addHighScoreAchievement() {
+		this.achievements.add(new Achievement("high_score_1000",
+				"High Roller", "Reach 1,000 points in a single run.", 0,
+				HIGH_SCORE_TARGET, this.playerProfile
+						.isAchievementUnlocked("high_score_1000")));
 	}
 
 	/**
@@ -56,6 +67,29 @@ public class AchievementManager {
 			}
 
 		saveProfile();
+		return unlockedAchievement;
+	}
+
+	/**
+	 * Checks the current run's score against score-based achievements, and
+	 * saves any newly unlocked progress.
+	 *
+	 * @param currentScore Score reached so far in the current run.
+	 * @return Newly unlocked achievement, or null when nothing unlocks.
+	 */
+	public final Achievement recordScore(final int currentScore) {
+		Achievement unlockedAchievement = null;
+
+		for (Achievement achievement : this.achievements)
+			if (!achievement.isUnlocked() && achievement.getRequiredScore() > 0
+					&& currentScore >= achievement.getRequiredScore()) {
+				achievement.unlock();
+				this.playerProfile.unlockAchievement(achievement.getId());
+				unlockedAchievement = achievement;
+			}
+
+		if (unlockedAchievement != null)
+			saveProfile();
 		return unlockedAchievement;
 	}
 
